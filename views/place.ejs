@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <p><%= place.content %></p>
+    <% place.actions.forEach(function(action, index) { %>
+      <a href="/places/<%= action.link %>"><%= action.body %></a>
+    <% }); %>
+  </body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <p>These are the places: <%= places %></p>
+
+    <h2>Create place</h2>
+    <form action="/places/create" method="post">
+      <label>Content:</label>
+      <input type="text" name="content" value="Hello place" />
+      <label>Actions:</label>
+      <input type="text" name="actions[0][body]" value="action one" />
+      <input type="text" name="actions[0][link]" value="5644ba265dc509094b7914d1" />
+      <input type="text" name="actions[1][body]" value="action two"/>
+      <input type="text" name="actions[1][link]" value="1244ba265dc519094b791443" />
+
+      <input type="Submit" value="Submit" />
+    </form>
+  </body>
+</html>
