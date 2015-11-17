@@ -14,11 +14,12 @@
       <% }); %>
     </ul>
 
-    <h1>Create place</h1>
+    <h1>Edit place</h1>
     <% if (err) { %>
       <p><%= err %></p>
     <% } %>
-    <form action="/places/create" method="post">
+    <form action="/places/update" method="post">
+      <input type="hidden" name="_id" value="<%= place._id %>" />
       <label>Content:</label>
       <input type="text" name="content" value="<%= place.content %>" /><br /><br />
       <label>Action 1:</label>
