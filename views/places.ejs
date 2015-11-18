@@ -3,18 +3,24 @@
   <head>
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+
+    <script src="/javascripts/dagre.min.js"></script>
+    <script src="/javascripts/cytoscape.min.js"></script>
+    <script src="/javascripts/cytoscape-dagre.js"></script>
+
   </head>
   <body>
+
     <h1><%= title %></h1>
-    <p>These are the places:</p>
+    <h2>These are the places:</h2>
     <ul>
       <% places.forEach(function(place, index) { %>
         <li><a href="/places/<%= place._id %>/edit"><%= place.content %> -
-          <%= place._id %></a></li>
+          <%= place._id %></a> – <a href="/places/<%= place._id %>/destroy">Destroy</a></li>
       <% }); %>
     </ul>
 
-    <h1>Create place</h1>
+    <h2>Create place</h2>
     <% if (err) { %>
       <p><%= err %></p>
     <% } %>
@@ -32,5 +38,53 @@
 
       <input type="Submit" value="Submit" />
     </form>
+
+    <h2>Graph</h2>
+		<div id="cy"></div>
+    <script>
+      function makeGraph() {
+
+        var cy = window.cy = cytoscape({
+          container: document.getElementById('cy'),
+
+          boxSelectionEnabled: false,
+          autounselectify: true,
+
+          layout: {
+            name: 'dagre'
+          },
+
+          style: [
+            {
+              selector: 'node',
+              style: {
+                'content': 'data(id)',
+                'text-opacity': 0.5,
+                'text-valign': 'center',
+                'text-halign': 'right',
+                'background-color': '#11479e'
+              }
+            },
+
+            {
+              selector: 'edge',
+              style: {
+                'width': 4,
+                'target-arrow-shape': 'triangle',
+                'line-color': '#9dbaea',
+                'target-arrow-color': '#9dbaea'
+              }
+            }
+          ],
+
+          elements: {
+            nodes: <%- nodes %>,
+            edges: <%- edges %>
+          },
+        });
+
+      }
+      makeGraph();
+</script>
   </body>
 </html>

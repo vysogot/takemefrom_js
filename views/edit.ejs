@@ -10,7 +10,7 @@
     <ul>
       <% places.forEach(function(place, index) { %>
         <li><a href="/places/<%= place._id %>/edit"><%= place.content %> -
-          <%= place._id %></a></li>
+          <%= place._id %></a> – <a href="/places/<%= place._id %>/destroy">Destroy</a></li>
       <% }); %>
     </ul>
 
@@ -23,13 +23,13 @@
       <label>Content:</label>
       <input type="text" name="content" value="<%= place.content %>" /><br /><br />
       <label>Action 1:</label>
-      <input type="text" name="actions[0][body]" value="<%= place.actions[0].body %>" /><br />
+      <input type="text" name="actions[0][body]" value="<%= place.actions[0] && place.actions[0].body %>" /><br />
       <label>Link 1:</label>
-      <input type="text" name="actions[0][link]" value="<%= place.actions[0].link %>" /><br /><br />
+      <input type="text" name="actions[0][link]" value="<%= place.actions[0] && place.actions[0].link %>" /><br /><br />
       <label>Action 2:</label>
-      <input type="text" name="actions[1][body]" value="<%= place.actions[1].body %>"/><br />
+      <input type="text" name="actions[1][body]" value="<%= place.actions[1] && place.actions[1].body %>"/><br />
       <label>Link 2:</label>
-      <input type="text" name="actions[1][link]" value="<%= place.actions[1].link %>" /><br /><br />
+      <input type="text" name="actions[1][link]" value="<%= place.actions[1] && place.actions[1].link %>" /><br /><br />
 
       <input type="Submit" value="Submit" />
     </form>
