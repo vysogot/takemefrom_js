@@ -31,11 +31,12 @@ router.get('/', function(req, res) {
     edges = [];
 
     places.forEach(function(place) {
-      nodes.push({ data: { id: place._id + '' } });
+      nodes.push({ data: { id: place._id + '', content: place.content + '' } });
       place.actions.forEach(function(action) {
         if (action.link !== undefined) {
           edges.push({ data: { source: place._id + '',
-                               target: action.link + '' }})
+                               target: action.link + '',
+                               label: action.body + '' }})
         }
       });
     });
@@ -87,6 +88,7 @@ router.post('/update', function(req, res) {
     if (action.body !== '' && action.link === '') {
       Place({ content: 'Post - ' + action.body, actions: [] }).save(function(err, place) {
         action.link = place._id;
+        console.log('hello');
         callback();
       });
     }

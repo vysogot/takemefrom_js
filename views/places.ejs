@@ -10,81 +10,9 @@
 
   </head>
   <body>
-
     <h1><%= title %></h1>
-    <h2>These are the places:</h2>
-    <ul>
-      <% places.forEach(function(place, index) { %>
-        <li><a href="/places/<%= place._id %>/edit"><%= place.content %> -
-          <%= place._id %></a> – <a href="/places/<%= place._id %>/destroy">Destroy</a></li>
-      <% }); %>
-    </ul>
-
-    <h2>Create place</h2>
-    <% if (err) { %>
-      <p><%= err %></p>
-    <% } %>
-    <form action="/places/create" method="post">
-      <label>Content:</label>
-      <input type="text" name="content" value="<%= place.content %>" /><br /><br />
-      <label>Action 1:</label>
-      <input type="text" name="actions[0][body]" value="<%= place.actions[0].body %>" /><br />
-      <label>Link 1:</label>
-      <input type="text" name="actions[0][link]" value="<%= place.actions[0].link %>" /><br /><br />
-      <label>Action 2:</label>
-      <input type="text" name="actions[1][body]" value="<%= place.actions[1].body %>"/><br />
-      <label>Link 2:</label>
-      <input type="text" name="actions[1][link]" value="<%= place.actions[1].link %>" /><br /><br />
-
-      <input type="Submit" value="Submit" />
-    </form>
-
-    <h2>Graph</h2>
-		<div id="cy"></div>
-    <script>
-      function makeGraph() {
-
-        var cy = window.cy = cytoscape({
-          container: document.getElementById('cy'),
-
-          boxSelectionEnabled: false,
-          autounselectify: true,
-
-          layout: {
-            name: 'dagre'
-          },
-
-          style: [
-            {
-              selector: 'node',
-              style: {
-                'content': 'data(id)',
-                'text-opacity': 0.5,
-                'text-valign': 'center',
-                'text-halign': 'right',
-                'background-color': '#11479e'
-              }
-            },
-
-            {
-              selector: 'edge',
-              style: {
-                'width': 4,
-                'target-arrow-shape': 'triangle',
-                'line-color': '#9dbaea',
-                'target-arrow-color': '#9dbaea'
-              }
-            }
-          ],
-
-          elements: {
-            nodes: <%- nodes %>,
-            edges: <%- edges %>
-          },
-        });
-
-      }
-      makeGraph();
-</script>
+    <%- include('_places_list') %>
+    <%- include('_create_form') %>
+    <%- include('_graph') %>
   </body>
 </html>

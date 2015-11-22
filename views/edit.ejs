@@ -3,35 +3,16 @@
   <head>
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+
+    <script src="/javascripts/dagre.min.js"></script>
+    <script src="/javascripts/cytoscape.min.js"></script>
+    <script src="/javascripts/cytoscape-dagre.js"></script>
+
   </head>
   <body>
     <h1><%= title %></h1>
-    <p>These are the places:</p>
-    <ul>
-      <% places.forEach(function(place, index) { %>
-        <li><a href="/places/<%= place._id %>/edit"><%= place.content %> -
-          <%= place._id %></a> – <a href="/places/<%= place._id %>/destroy">Destroy</a></li>
-      <% }); %>
-    </ul>
-
-    <h1>Edit place</h1>
-    <% if (err) { %>
-      <p><%= err %></p>
-    <% } %>
-    <form action="/places/update" method="post">
-      <input type="hidden" name="_id" value="<%= place._id %>" />
-      <label>Content:</label>
-      <input type="text" name="content" value="<%= place.content %>" /><br /><br />
-      <label>Action 1:</label>
-      <input type="text" name="actions[0][body]" value="<%= place.actions[0] && place.actions[0].body %>" /><br />
-      <label>Link 1:</label>
-      <input type="text" name="actions[0][link]" value="<%= place.actions[0] && place.actions[0].link %>" /><br /><br />
-      <label>Action 2:</label>
-      <input type="text" name="actions[1][body]" value="<%= place.actions[1] && place.actions[1].body %>"/><br />
-      <label>Link 2:</label>
-      <input type="text" name="actions[1][link]" value="<%= place.actions[1] && place.actions[1].link %>" /><br /><br />
-
-      <input type="Submit" value="Submit" />
-    </form>
+    <%- include('_places_list') %>
+    <%- include('_edit_form') %>
+    <%- include('_graph') %>
   </body>
 </html>
