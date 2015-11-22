@@ -52,7 +52,6 @@ router.get('/', function(req, res) {
 router.post('/create', function(req, res) {
   var params = req.body;
 
-
   async.series([
     function(done) {
       async.each(params.actions, function(action, callback) {
@@ -61,11 +60,16 @@ router.post('/create', function(req, res) {
             action.link = place._id;
             callback();
           });
+        } else {
+          callback();
         }
       }, done);
     },
 
-    function(done) {
+    function(callback) {
+      filteredActions = req.body.actions.filter(function(e) { return e.body !== ''})
+      req.body.actions = filteredActions;
+
       Place(params).save(function(err, place) {
         if (err) {
           res.send(err);
@@ -75,7 +79,7 @@ router.post('/create', function(req, res) {
           });
         }
       });
-      done();
+      callback();
     }
   ]);
 });
@@ -88,15 +92,19 @@ router.post('/update', function(req, res) {
     if (action.body !== '' && action.link === '') {
       Place({ content: 'Post - ' + action.body, actions: [] }).save(function(err, place) {
         action.link = place._id;
-        console.log('hello');
         callback();
       });
+    } else {
+      callback();
     }
   }, function() {
+    filteredActions = req.body.actions.filter(function(e) { return e.body !== ''})
+    req.body.actions = filteredActions;
+
     Place.update({ _id: id }, req.body, function(err, place) {
       if (err) {
-        Place.find({}, function(err, places) {
-          res.render('edit', { title: 'Edit', place: req.body, places: places, err: err });
+        Place.find({}, function(err2, places) {
+          res.render('edit', { title: 'Edit', place: req.body, places: places, err: err + ' ' + err2 });
         });
       } else {
         res.redirect('/places');
