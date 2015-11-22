@@ -3,12 +3,23 @@
   <head>
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/stylesheets/play.css' />
   </head>
   <body>
-    <h1><%= title %></h1>
-    <p><%= place.content %></p>
-    <% place.actions.forEach(function(action, index) { %>
-      <a href="/places/<%= action.link %>"><%= action.body %></a>
-    <% }); %>
+    <div id="container">
+     <div id="content">
+
+      <p id="text">
+        <%= place.content %>
+      </p>
+
+      <div class="submit">
+        <% place.actions.forEach(function(action, index) { %>
+          <a class="button-blue" href="/places/<%= action.link %>"><%= action.body %></a>
+          <div class="ease"></div>
+        <% }); %>
+      </div>
+    </div>
+</div>
   </body>
 </html>

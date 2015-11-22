@@ -103,9 +103,7 @@ router.post('/update', function(req, res) {
 
     Place.update({ _id: id }, req.body, function(err, place) {
       if (err) {
-        Place.find({}, function(err2, places) {
-          res.render('edit', { title: 'Edit', place: req.body, places: places, err: err + ' ' + err2 });
-        });
+        res.send(err);
       } else {
         res.redirect('/places');
       }
