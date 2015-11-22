@@ -19,6 +19,7 @@ var PlaceSchema = new Schema({
 });
 
 var Place = mongoose.model('places', PlaceSchema);
+var title = "Take me from";
 
 
 /* GET users listing. */
@@ -43,7 +44,7 @@ router.get('/', function(req, res) {
 
     nodes = util.inspect(nodes);
     edges = util.inspect(edges);
-    res.render('places', { title: 'Places',
+    res.render('places', { title: title,
       places: places, place: place, err: err, nodes: nodes, edges: edges }
     );
   });
@@ -114,7 +115,7 @@ router.post('/update', function(req, res) {
 router.get('/:id/edit', function(req, res) {
   Place.findOne({ _id: req.params.id }, function(err, place) {
     Place.find({}, function(err, places) {
-      res.render('edit', { title: 'Place', place: place, places: places, err: err });
+      res.render('edit', { title: title, place: place, places: places, err: err });
     });
   });
 });
@@ -127,7 +128,7 @@ router.get('/:id/destroy', function(req, res) {
 
 router.get('/:id', function(req, res) {
   Place.findOne({ _id: req.params.id }, function(err, place) {
-    res.render('place', { title: 'Place', place: place });
+    res.render('place', { title: title, place: place });
   });
 });
 

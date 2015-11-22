@@ -6,14 +6,14 @@
 <form action="/places/create" method="post">
   <label>Content:</label>
   <input type="text" name="content" value="<%= place.content %>" /><br /><br />
-  <label>Action 1:</label>
-  <input type="text" name="actions[0][body]" value="<%= place.actions[0].body %>" /><br />
-  <label>Link 1:</label>
-  <input type="text" name="actions[0][link]" value="<%= place.actions[0].link %>" /><br /><br />
-  <label>Action 2:</label>
-  <input type="text" name="actions[1][body]" value="<%= place.actions[1].body %>"/><br />
-  <label>Link 2:</label>
-  <input type="text" name="actions[1][link]" value="<%= place.actions[1].link %>" /><br /><br />
+  <% for (i = 0; i < 4; i++) { %>
+    <label>Action <%= i+1 %>:</label>
+    <input type="text" name="actions[<%= i %>][body]"
+      value="<%= place.actions[i] && place.actions[i].body %>" /><br />
+    <label>Link <%= i+1 %>:</label>
+    <input type="text" name="actions[<%= i %>][link]"
+      value="<%= place.actions[i] && place.actions[i].link %>" /><br /><br />
+  <% } %>
 
   <input type="Submit" value="Submit" />
 </form>
