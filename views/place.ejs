@@ -10,9 +10,13 @@
         <%= place.content %>
       </p>
 
+      <% if (place.actions.length > 0) { %>
       <% place.actions.forEach(function(action, index) { %>
         <p><a href="/places/<%= action.link %>"><%= action.body %></a></p>
       <% }); %>
+      <% } else { %>
+        <p>The end. Try to <a href="/places/<%= place._id %>/edit">redesign</a> this place.</p>
+      <% } %>
     </div>
   </body>
 </html>
