@@ -98,7 +98,26 @@ router.post('/update', function(req, res) {
 router.get('/:id/edit', function(req, res) {
   Place.findOne({ _id: req.params.id }, function(err, place) {
     Place.find({}, function(err, places) {
-      res.render('edit', { title: title, place: place, places: places, err: err });
+
+      // code duplication on purpose
+      nodes = [];
+      edges = [];
+
+      places.forEach(function(place) {
+        nodes.push({ data: { id: place._id + '', content: place.content + '' } });
+        place.actions.forEach(function(action) {
+          if (action.link !== undefined) {
+            edges.push({ data: { source: place._id + '',
+                                 target: action.link + '',
+                                 label: action.body + '' }})
+          }
+        });
+      });
+
+      nodes = util.inspect(nodes);
+      edges = util.inspect(edges);
+
+      res.render('edit', { title: title, place: place, places: places, err: err, nodes: nodes, edges: edges });
     });
   });
 });
