@@ -4,7 +4,7 @@ var router = express.Router();
 var Place = require('../schemas/place');
 
 router.get('/', function(req, res, next) {
-  Place.findOne({}, function(err, place) {
+  Place.findOne({ content: "The beginning..." }, function(err, place) {
     if (place) {
       res.render('index', { title: 'Take me from', href: '/places/' + place._id, link: 'Play' });
     } else {
