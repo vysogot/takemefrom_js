@@ -8,10 +8,10 @@
   <input type="text" name="content" value="<%= place.content %>" /><br /><br />
   <% for (i = 0; i < 4; i++) { %>
     <label>Action <%= i+1 %>:</label>
-    <input type="text" name="actions[<%= i %>][body]"
-      value="<%= place.actions[i] && place.actions[i].body %>" /><br />
+    <input type="text" name="actions[<%= i %>][body]" placeholder="Leave blank or put action body..."
+      value="<%= place.actions[i] && place.actions[i].body %>" />
     <label>Link <%= i+1 %>:</label>
-    <input type="text" name="actions[<%= i %>][link]"
+    <input type="text" name="actions[<%= i %>][link]" placeholder="Leave blank or put place id..."
       value="<%= place.actions[i] && place.actions[i].link %>" /><br /><br />
   <% } %>
 
