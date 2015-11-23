@@ -1,28 +1,11 @@
 var express = require('express');
-var mongoose = require('mongoose');
 var util = require('util');
 var async = require('async');
 var router = express.Router();
 
-// Places documents
-var Schema = mongoose.Schema;
-
-var PlaceSchema = new Schema({
-    content: String,
-    actions: [
-      {
-        _id: false,
-        body: String,
-        link: Schema.Types.ObjectId,
-      }
-    ]
-});
-
-var Place = mongoose.model('places', PlaceSchema);
+var Place = require('../schemas/place');
 var title = "Take me from";
 
-
-/* GET users listing. */
 router.get('/', function(req, res) {
   var place = new Place({ content: "", actions: [{body: "", link: ""}, {body:"", link:""}]});
   Place.find({}, function(err, places) {
