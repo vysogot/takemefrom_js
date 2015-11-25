@@ -132,7 +132,7 @@ router.get('/:id', function(req, res) {
   Place.findOne({ _id: req.params.id }, function(err, place) {
     checkedActions = [];
 
-    async.series([
+    async.series([ 
       function(done) {
         async.each(place.actions, function(action, callback) {
           Place.findOne({ _id: action.link}, function(err, place) {
