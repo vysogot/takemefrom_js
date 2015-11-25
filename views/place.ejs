@@ -10,13 +10,12 @@
         <%= place.content %>
       </p>
 
-      <% if (place.actions.length > 0) { %>
-      <% place.actions.forEach(function(action, index) { %>
+      <% checkedActions.forEach(function(action, index) { %>
         <p><a href="/places/<%= action.link %>"><%= action.body %></a></p>
       <% }); %>
-      <% } else { %>
-        <p>The end. Try to <a href="/places/<%= place._id %>/edit">redesign</a> this place.</p>
-      <% } %>
+
+      <p id="redesign">You can always <a href="/places/<%= place._id %>/edit">redesign this place</a>.</p>
+
     </div>
 
     <%- include('_ga') %>

@@ -130,7 +130,22 @@ router.get('/:id/destroy', function(req, res) {
 
 router.get('/:id', function(req, res) {
   Place.findOne({ _id: req.params.id }, function(err, place) {
-    res.render('place', { title: title, place: place });
+    checkedActions = [];
+
+    async.series([
+      function(done) {
+        async.each(place.actions, function(action, callback) {
+          Place.findOne({ _id: action.link}, function(err, place) {
+            if (place) {
+              checkedActions.push(action);
+            }
+            callback();
+          });
+        }, done) },
+      function(callback) {
+        res.render('place', { title: title, place: place, actions: checkedActions });
+      }
+    ]);
   });
 });
 
