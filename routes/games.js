@@ -28,7 +28,8 @@ router.post('/create', function(req, res) {
     if (err) {
       res.send(err);
     } else {
-      firstPlace = { _id: firstPlaceId, gameId: game._id, content: "The beginning...", actions: [] }
+      firstPlace = { _id: firstPlaceId, gameId: game._id, isBeginning: true,
+        content: "The beginning...", actions: [] }
       Place(firstPlace).save(function(err, place) {
         res.redirect('/places/design/' + game._id)
       });

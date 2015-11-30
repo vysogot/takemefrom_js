@@ -4,7 +4,8 @@ var async = require('async');
 var router = express.Router();
 
 var Place = require('../schemas/place');
-var title = "Places | Take me from";
+
+var title = "Take me from";
 
 router.get('/design/:gameId', function(req, res) {
   var place = new Place({ content: "", gameId: req.params.gameId,
@@ -132,11 +133,15 @@ router.get('/:id/edit', function(req, res) {
 });
 
 router.get('/:id/destroy', function(req, res) {
-  Place.findOne({ _id: id}, function(err, place) {
-    gameId = place.gameId;
-    Place.remove({ _id: req.params.id }, function(err, place) {
+  Place.findOne({ _id: req.params.id}, function(err, place) {
+    if (place.isBeginning) {
       res.redirect('/places/design/' + gameId);
-    });
+    } else {
+      gameId = place.gameId;
+      Place.remove({ _id: req.params.id }, function(err, place) {
+        res.redirect('/places/design/' + gameId);
+      });
+    }
   });
 });
 

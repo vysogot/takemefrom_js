@@ -11,6 +11,7 @@ var ActionSchema = new Schema({
 
 var PlaceSchema = new Schema({
     gameId: Schema.Types.ObjectId,
+    isBeginning: Boolean,
     content: String,
     actions: [ActionSchema]
 });
