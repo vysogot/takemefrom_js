@@ -4,6 +4,7 @@ var async = require('async');
 var router = express.Router();
 
 var Place = require('../schemas/place');
+var Game = require('../schemas/game');
 
 var title = "Take me from";
 
@@ -30,9 +31,13 @@ router.get('/design/:gameId', function(req, res) {
 
     nodes = util.inspect(nodes);
     edges = util.inspect(edges);
-    res.render('places/index', { title: title,
-      places: places, place: place, err: err, nodes: nodes, edges: edges }
-    );
+
+    Game.findOne({ _id: req.params.gameId }, function(err, game) {
+      var gameUrl = req.protocol + '://' + req.get('host') + '/places/' + game.theBeginning;
+      res.render('places/index', { title: title + "| " + game.name, gameUrl: gameUrl,
+        places: places, place: place, err: err, nodes: nodes, edges: edges }
+      );
+    });
   });
 });
 
@@ -126,8 +131,11 @@ router.get('/:id/edit', function(req, res) {
       nodes = util.inspect(nodes);
       edges = util.inspect(edges);
 
-      res.render('places/edit', { title: title, place: place, places: places,
-        err: err, nodes: nodes, edges: edges });
+      Game.findOne({ _id: place.gameId }, function(err, game) {
+        var gameUrl = req.protocol + '://' + req.get('host') + '/places/' + game.theBeginning;
+        res.render('places/edit', { title: title + "| " + game.name, place: place, places: places,
+          err: err, nodes: nodes, edges: edges, gameUrl: gameUrl });
+      });
     });
   });
 });
