@@ -14,12 +14,4 @@ var PlaceSchema = new Schema({
     actions: [ActionSchema]
 });
 
-var GameSchema = new Schema({
-    name: String,
-    slug: String,
-    places: [PlaceSchema]
-})
-
-//var Place = mongoose.model('places', PlaceSchema);
-
-module.exports = mongoose.model( 'Place', PlaceSchema, 'places' );
+module.exports = mongoose.model('Place', PlaceSchema, 'places');

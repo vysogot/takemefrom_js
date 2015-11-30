@@ -4,7 +4,7 @@ var async = require('async');
 var router = express.Router();
 
 var Place = require('../schemas/place');
-var title = "Take me from";
+var title = "Places | Take me from";
 
 router.get('/', function(req, res) {
   var place = new Place({ content: "", actions: [{body: "", link: ""}, {body:"", link:""}]});
@@ -27,7 +27,7 @@ router.get('/', function(req, res) {
 
     nodes = util.inspect(nodes);
     edges = util.inspect(edges);
-    res.render('places', { title: title,
+    res.render('places/index', { title: title,
       places: places, place: place, err: err, nodes: nodes, edges: edges }
     );
   });
@@ -117,7 +117,7 @@ router.get('/:id/edit', function(req, res) {
       nodes = util.inspect(nodes);
       edges = util.inspect(edges);
 
-      res.render('edit', { title: title, place: place, places: places, err: err, nodes: nodes, edges: edges });
+      res.render('places/edit', { title: title, place: place, places: places, err: err, nodes: nodes, edges: edges });
     });
   });
 });
@@ -143,7 +143,7 @@ router.get('/:id', function(req, res) {
           });
         }, done) },
       function(callback) {
-        res.render('place', { title: title, place: place, actions: checkedActions });
+        res.render('places/show', { title: title, place: place, actions: checkedActions });
       }
     ]);
   });
