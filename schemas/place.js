@@ -10,6 +10,7 @@ var ActionSchema = new Schema({
 });
 
 var PlaceSchema = new Schema({
+    gameId: Schema.Types.ObjectId,
     content: String,
     actions: [ActionSchema]
 });

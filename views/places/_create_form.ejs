@@ -4,6 +4,7 @@
 <% } %>
 
 <form action="/places/create" method="post">
+  <input type="hidden" name="gameId" value="<%= place.gameId %>" />
   <label>Content:</label>
   <input type="text" name="content" value="<%= place.content %>" /><br /><br />
   <% for (i = 0; i < 4; i++) { %>

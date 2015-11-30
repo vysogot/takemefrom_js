@@ -4,6 +4,7 @@
 <% } %>
 
 <form action="/places/update" method="post">
+  <input type="hidden" name="gameId" value="<%= place.gameId %>" />
   <input type="hidden" name="_id" value="<%= place._id %>" />
   <label>Content:</label>
   <input type="text" name="content" value="<%= place.content %>" /><br /><br />

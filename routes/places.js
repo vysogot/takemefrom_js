@@ -6,9 +6,11 @@ var router = express.Router();
 var Place = require('../schemas/place');
 var title = "Places | Take me from";
 
-router.get('/', function(req, res) {
-  var place = new Place({ content: "", actions: [{body: "", link: ""}, {body:"", link:""}]});
-  Place.find({}, function(err, places) {
+router.get('/design/:gameId', function(req, res) {
+  var place = new Place({ content: "", gameId: req.params.gameId,
+    actions: [{body: "", link: ""}, {body:"", link:""}]});
+
+  Place.find({ gameId: req.params.gameId }, function(err, places) {
 
     elements = {};
     nodes = [];
@@ -36,11 +38,15 @@ router.get('/', function(req, res) {
 router.post('/create', function(req, res) {
   var params = req.body;
 
+  filteredActions = req.body.actions.filter(function(e) { return e.body !== ''})
+  req.body.actions = filteredActions;
+
   async.series([
     function(done) {
       async.each(params.actions, function(action, callback) {
-        if (action.body !== '' && action.link === '') {
-          Place({ content: 'Post - ' + action.body, actions: [] }).save(function(err, place) {
+        if (action.link === '') {
+          newPlace = { content: 'Post - ' + action.body, gameId: params.gameId, actions: [] }
+          Place(newPlace).save(function(err, place) {
             action.link = place._id;
             callback();
           });
@@ -51,15 +57,13 @@ router.post('/create', function(req, res) {
     },
 
     function(callback) {
-      filteredActions = req.body.actions.filter(function(e) { return e.body !== ''})
-      req.body.actions = filteredActions;
 
       Place(params).save(function(err, place) {
         if (err) {
           res.send(err);
         } else {
           Place.find({}, function(err, places) {
-            res.redirect('/places')
+            res.redirect('/places/design/' + place.gameId)
           });
         }
       });
@@ -72,9 +76,13 @@ router.post('/update', function(req, res) {
   id = req.body._id;
   delete req.body._id;
 
+  filteredActions = req.body.actions.filter(function(e) { return e.body !== ''})
+  req.body.actions = filteredActions;
+
   async.each(req.body.actions, function(action, callback) {
-    if (action.body !== '' && action.link === '') {
-      Place({ content: 'Post - ' + action.body, actions: [] }).save(function(err, place) {
+    if (action.link === '') {
+      newPlace = { content: 'Post - ' + action.body, gameId: req.body.gameId, actions: [] }
+      Place(newPlace).save(function(err, place) {
         action.link = place._id;
         callback();
       });
@@ -82,14 +90,14 @@ router.post('/update', function(req, res) {
       callback();
     }
   }, function() {
-    filteredActions = req.body.actions.filter(function(e) { return e.body !== ''})
-    req.body.actions = filteredActions;
 
     Place.update({ _id: id }, req.body, function(err, place) {
       if (err) {
         res.send(err);
       } else {
-        res.redirect('/places');
+        Place.findOne({ _id: id}, function(err, place) {
+          res.redirect('/places/design/' + place.gameId);
+        });
       }
     });
   });
@@ -97,7 +105,7 @@ router.post('/update', function(req, res) {
 
 router.get('/:id/edit', function(req, res) {
   Place.findOne({ _id: req.params.id }, function(err, place) {
-    Place.find({}, function(err, places) {
+    Place.find({ gameId: place.gameId }, function(err, places) {
 
       // code duplication on purpose
       nodes = [];
@@ -117,14 +125,18 @@ router.get('/:id/edit', function(req, res) {
       nodes = util.inspect(nodes);
       edges = util.inspect(edges);
 
-      res.render('places/edit', { title: title, place: place, places: places, err: err, nodes: nodes, edges: edges });
+      res.render('places/edit', { title: title, place: place, places: places,
+        err: err, nodes: nodes, edges: edges });
     });
   });
 });
 
 router.get('/:id/destroy', function(req, res) {
-  Place.remove({ _id: req.params.id }, function(err, place) {
-    res.redirect('/places');
+  Place.findOne({ _id: id}, function(err, place) {
+    gameId = place.gameId;
+    Place.remove({ _id: req.params.id }, function(err, place) {
+      res.redirect('/places/design/' + gameId);
+    });
   });
 });
 

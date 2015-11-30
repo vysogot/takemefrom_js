@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 var GameSchema = new Schema({
     name: String,
     slug: String,
-    places: [PlaceSchema]
+    theBeginning: Schema.Types.ObjectId
 })
 
 module.exports = mongoose.model('Game', GameSchema, 'games');
