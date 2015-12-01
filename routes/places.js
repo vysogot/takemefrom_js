@@ -9,33 +9,34 @@ var Game = require('../schemas/game');
 var title = "Take me from";
 
 router.get('/design/:gameId', function(req, res) {
-  var place = new Place({ content: "", gameId: req.params.gameId,
-    actions: [{body: "", link: ""}, {body:"", link:""}]});
+  Game.findOne({ _id: req.params.gameId }, function(err, game) {
+    var place = new Place({ content: "", gameId: req.params.gameId,
+      actions: [{body: "", link: ""}, {body:"", link:""}]});
 
-  Place.find({ gameId: req.params.gameId }, function(err, places) {
+    Place.find({ gameId: req.params.gameId }, function(err2, places) {
 
-    elements = {};
-    nodes = [];
-    edges = [];
+      elements = {};
+      nodes = [];
+      edges = [];
 
-    places.forEach(function(place) {
-      nodes.push({ data: { id: place._id + '', content: place.content + '' } });
-      place.actions.forEach(function(action) {
-        if (action.link !== undefined) {
-          edges.push({ data: { source: place._id + '',
-                               target: action.link + '',
-                               label: action.body + '' }})
-        }
+      places.forEach(function(place) {
+        nodes.push({ data: { id: place._id + '', content: place.content + '' } });
+        place.actions.forEach(function(action) {
+          if (action.link !== undefined) {
+            edges.push({ data: { source: place._id + '',
+                                 target: action.link + '',
+                                 label: action.body + '' }})
+          }
+        });
       });
-    });
 
-    nodes = util.inspect(nodes);
-    edges = util.inspect(edges);
+      nodes = util.inspect(nodes);
+      edges = util.inspect(edges);
 
-    Game.findOne({ _id: req.params.gameId }, function(err, game) {
+
       var gameUrl = req.protocol + '://' + req.get('host') + '/places/' + game.theBeginning;
-      res.render('places/index', { title: title + "| " + game.name, gameUrl: gameUrl,
-        places: places, place: place, err: err, nodes: nodes, edges: edges }
+      res.render('places/index', { title: title + " | " + game.name, gameUrl: gameUrl,
+        places: places, place: place, err: err + err2, nodes: nodes, edges: edges }
       );
     });
   });
@@ -133,7 +134,7 @@ router.get('/:id/edit', function(req, res) {
 
       Game.findOne({ _id: place.gameId }, function(err, game) {
         var gameUrl = req.protocol + '://' + req.get('host') + '/places/' + game.theBeginning;
-        res.render('places/edit', { title: title + "| " + game.name, place: place, places: places,
+        res.render('places/edit', { title: title + " | " + game.name, place: place, places: places,
           err: err, nodes: nodes, edges: edges, gameUrl: gameUrl });
       });
     });

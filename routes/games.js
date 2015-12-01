@@ -2,6 +2,7 @@ var express = require('express');
 var mongoose = require('mongoose');
 var util = require('util');
 var async = require('async');
+var bcrypt = require('bcrypt');
 var router = express.Router();
 
 var Game = require('../schemas/game');
@@ -23,6 +24,12 @@ router.post('/create', function(req, res) {
   var params = req.body;
   firstPlaceId = mongoose.Types.ObjectId();
   params['theBeginning'] = firstPlaceId;
+
+  if (params.password !== '') {
+    salt = bcrypt.genSaltSync(10);
+    hash = bcrypt.hashSync(params.password, salt);
+    params['hash'] = hash;
+  }
 
   Game(params).save(function(err, game) {
     if (err) {
