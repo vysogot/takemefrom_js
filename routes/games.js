@@ -16,8 +16,14 @@ router.get('/', function(req, res) {
   });
 });
 
+router.get('/my-games', function(req, res) {
+  Game.find({ userId: req.user.id }, function(err, games) {
+    res.render('games/my-games', { title: title, games: games })
+  });
+});
+
 router.get('/new', function(req, res) {
-  res.render('games/new', { title: title, err: '' });
+  res.render('games/new', { title: title, err: '', user: req.user });
 });
 
 router.post('/create', function(req, res) {
@@ -25,10 +31,12 @@ router.post('/create', function(req, res) {
   firstPlaceId = mongoose.Types.ObjectId();
   params['theBeginning'] = firstPlaceId;
 
-  if (params.password !== '') {
-    salt = bcrypt.genSaltSync(10);
-    hash = bcrypt.hashSync(params.password, salt);
-    params['hash'] = hash;
+  if (req.user) {
+    params.userId = req.user.id;
+  }
+
+  if (req.user && params.isPrivate) {
+    params.isPrivate = true;
   }
 
   Game(params).save(function(err, game) {

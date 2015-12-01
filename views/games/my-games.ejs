@@ -7,15 +7,15 @@
   <body>
     <div>
       <% if (games.length > 0) { %>
-        <p>Pick one:</p>
+        <p>These are your games:</p>
         <% games.forEach(function(game, index) { %>
           <p><a href="/places/<%= game.theBeginning %>"><%= game.name %></a></p>
         <% }); %>
       <% } else { %>
         <p>There is no game to play.</p>
       <% } %>
-
-      <p><a href="/games/new">Create your own</a>.</p>
+      <hr />
+      <p><a href="/games/new">Create a new one</a>.</p>
 
     </div>
   </body>

@@ -19,7 +19,8 @@ a {
   color: #3E5C76;
 }
 
-input[type="text"] { width: 300px; }
+label { width: 300px; display: block;}
+input[type="text"], input[type="password"] { width: 300px; }
 
 #redesign { margin-top: 100px; }
 
