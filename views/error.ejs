@@ -1,3 +1,12 @@
-<h1><%= message %></h1>
-<h2><%= error.status %></h2>
-<pre><%= error.stack %></pre>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Take me from the error!</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1>You've found an error, awesome! :-) send it to me!</h1>
+    <h3><%= error.status %></h3>
+    <pre><%= error.stack %></pre>
+  </body>
+</html>

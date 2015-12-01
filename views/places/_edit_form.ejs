@@ -10,10 +10,10 @@
   <input type="text" name="content" value="<%= place.content %>" /><br /><br />
   <% for (i = 0; i < 4; i++) { %>
     <label class="action">Action <%= i+1 %>:</label>
-    <input type="text" name="actions[<%= i %>][body]" placeholder="Leave blank or put action body..."
+    <input type="text" name="actions[<%= i %>][body]" placeholder="Leave blank or type what may happen..."
       value="<%= place.actions[i] && place.actions[i].body %>" />
     <label class="action">Link <%= i+1 %>:</label>
-    <input type="text" name="actions[<%= i %>][link]" placeholder="Leave blank or put place id..."
+    <input type="text" name="actions[<%= i %>][link]" placeholder="Leave blank or copy-paste another place id..."
       value="<%= place.actions[i] && place.actions[i].link %>" /><br /><br />
   <% } %>
 

@@ -46,7 +46,7 @@ router.post('/create', function(req, res) {
       firstPlace = { _id: firstPlaceId, gameId: game._id, isBeginning: true,
         content: "The beginning...", actions: [] }
       Place(firstPlace).save(function(err, place) {
-        res.redirect('/places/design/' + game._id)
+        res.redirect('/places/' + firstPlaceId + '/edit')
       });
     }
   });

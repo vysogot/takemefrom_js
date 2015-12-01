@@ -22,12 +22,12 @@ router.post('/register', function(req, res, next) {
   User.register(new User({username: req.body.username}), req.body.password, function(err) {
     if (err) {
       console.log('error while user register!', err);
-      return next(err);
+      return res.render('error', { error: err });
     }
 
     console.log('user registered!');
 
-    res.redirect('/');
+    res.redirect('/login');
   });
 });
 
