@@ -20,6 +20,7 @@ a {
 }
 
 label { width: 300px; display: block;}
+label.action { display: inline; }
 input[type="text"], input[type="password"] { width: 300px; }
 
 #redesign { margin-top: 100px; }
