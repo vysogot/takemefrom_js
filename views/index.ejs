@@ -9,9 +9,13 @@
       <h1><%= title %></h1>
       <p>one place to another</p>
       <p>
-        <a href="<%= href %>"><%= link %></a>,
-        <a href="/places">design</a> or
-        <a href="http://github.com/vysogot/takemefrom">contribute</a>
+      <% if (place) { %>
+        <p><a href="/places/<%= place.id %>">Play</a></p>
+        <p><a href="/places/design/<%= place.gameId %>">Design</a></p>
+      <% } %>
+        <p><a href="/games">Browse</a></p>
+        <p><a href="/games/new">Make</a>
+        <p><a href="http://github.com/vysogot/takemefrom">Contribute</a></p>
       </p>
     </div>
 

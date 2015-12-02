@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <div>
+      <% if (games.length > 0) { %>
+        <p>These are your games:</p>
+        <% games.forEach(function(game, index) { %>
+          <p><a href="/places/<%= game.theBeginning %>"><%= game.name %></a></p>
+        <% }); %>
+      <% } else { %>
+        <p>Welcome!</p>
+      <% } %>
+      <hr />
+      <p><a href="/games/new">Create a new game</a>.</p>
+
+    </div>
+  </body>
+</html>

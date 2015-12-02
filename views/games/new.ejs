@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <p>Make a new game:</p>
+
+    <% if (err) { %>
+      <p><%= err %></p>
+    <% } %>
+
+    <form action="/games/create" method="post">
+      <label>Name:</label>
+      <input type="text" name="name" /><br /><br />
+      <% if (user) { %>
+        <label>Protect my design:</label>
+        <input type="checkbox" name="isPrivate" />
+      <% } else { %>
+        You want your design to be password protected? <a href="/login">Log in</a>.
+      <% } %>
+      <br /><br />
+      <input type="Submit" value="Submit" />
+    </form>
+  </body>
+</html>

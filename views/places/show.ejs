@@ -14,10 +14,14 @@
         <p><a href="/places/<%= action.link %>"><%= action.body %></a></p>
       <% }); %>
 
-      <p id="redesign">You can always <a href="/places/<%= place._id %>/edit">redesign this place</a>.</p>
+      <% if (isEditable) { %>
+        <p id="redesign">You can always
+          <a href="/places/<%= place._id %>/edit">redesign this place</a>.
+        </p>
+      <% } %>
 
     </div>
 
-    <%- include('_ga') %>
+    <%- include('../_ga') %>
   </body>
 </html>

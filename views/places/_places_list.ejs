@@ -1,0 +1,16 @@
+<% if (places.length > 0) { %>
+  <h2>These are the places:</h2>
+  <ul>
+    <% places.forEach(function(place, index) { %>
+      <li><%= place.content %> - <%= place._id %> –
+        <a href="/places/<%= place._id %>">Go to</a> |
+        <a href="/places/<%= place._id %>/edit">Edit</a>
+        <% if (!place.isBeginning) { %>|
+          <a href="/places/<%= place._id %>/destroy" onclick="return confirm('Are you sure?')">Destroy</a>
+        <% } %>
+      </li>
+    <% }); %>
+  </ul>
+<% } else { %>
+  <h2>There are no places yet.</h2>
+<% } %>
