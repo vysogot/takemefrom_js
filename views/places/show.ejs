@@ -2,24 +2,21 @@
 <html>
   <head>
     <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/stylesheets/place.css' />
   </head>
   <body>
-    <div id="play">
-      <p id="content">
-        <%= place.content %>
+    <p class="content">
+      <%= place.content %>
+    </p>
+
+    <% checkedActions.forEach(function(action, index) { %>
+      <p class="choice"><a href="/places/<%= action.link %>"><%= action.body %></a></p>
+    <% }); %>
+
+    <% if (isEditable) { %>
+      <p class="redesign">
+        <a href="/places/<%= place._id %>/edit">Redesign this place</a>.
       </p>
-
-      <% checkedActions.forEach(function(action, index) { %>
-        <p><a href="/places/<%= action.link %>"><%= action.body %></a></p>
-      <% }); %>
-
-      <% if (isEditable) { %>
-        <p id="redesign">You can always
-          <a href="/places/<%= place._id %>/edit">redesign this place</a>.
-        </p>
-      <% } %>
-
-    </div>
+    <% } %>
   </body>
 </html>
