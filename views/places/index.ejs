@@ -6,10 +6,11 @@
     <%- include('_scripts') %>
   </head>
   <body>
-    <h1><%= title %></h1>
-    <%- include('_send_link') %>
-    <%- include('_places_list') %>
-    <%- include('_create_form') %>
-    <%- include('_graph') %>
+    <div id="container">
+      <h1><%= title %></h1>
+      <%- include('_places_list') %>
+      <%- include('_create_form') %>
+      <%- include('_graph') %>
+    </div>
   </body>
 </html>

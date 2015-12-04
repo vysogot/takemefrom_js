@@ -5,23 +5,24 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
+    <div id="container">
     <p>Make a new game:</p>
 
-    <% if (err) { %>
-      <p><%= err %></p>
-    <% } %>
-
-    <form action="/games/create" method="post">
-      <label>Name:</label>
-      <input type="text" name="name" /><br /><br />
-      <% if (user) { %>
-        <label>Protect my design:</label>
-        <input type="checkbox" name="isPrivate" />
-      <% } else { %>
-        You want your design to be password protected? <a href="/login">Log in</a>.
+      <% if (err) { %>
+        <p><%= err %></p>
       <% } %>
-      <br /><br />
-      <input type="Submit" value="Submit" />
-    </form>
+
+      <form action="/games/create" method="post">
+        <label>Name:</label>
+        <input type="text" name="name" /><br /><br />
+        <label>Protect design?</label>
+        <% if (user) { %>
+          <input type="checkbox" name="isPrivate" /><br />
+        <% } else { %>
+          <a href="/login">Log in</a> for that.<br />
+        <% } %>
+        <br /><input type="submit" value="Submit" />
+      </form>
+    </div>
   </body>
 </html>

@@ -5,11 +5,11 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
-    <div>
+    <div id="container">
       <% if (games.length > 0) { %>
         <p>Pick one:</p>
         <% games.forEach(function(game, index) { %>
-          <p><a href="/places/<%= game.theBeginning %>"><%= game.name %></a></p>
+          <p class="choice"><a href="/places/<%= game.theBeginning %>"><%= game.name %></a></p>
         <% }); %>
       <% } else { %>
         <p>There is no game to play.</p>
