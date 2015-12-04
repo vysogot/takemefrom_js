@@ -5,21 +5,29 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
-    <div id="play">
+    <div id="container">
       <p id="content">
         <%= place.content %>
       </p>
 
       <% checkedActions.forEach(function(action, index) { %>
-        <p><a href="/places/<%= action.link %>"><%= action.body %></a></p>
+        <p class="choice"><a href="/places/<%= action.link %>"><%= action.body %></a></p>
       <% }); %>
 
-      <% if (isEditable) { %>
-        <p id="redesign">You can always
-          <a href="/places/<%= place._id %>/edit">redesign this place</a>.
+      <% if (checkedActions.length === 0) { %>
+        <p class="choice">There is nothing you can do here.
+          <a href="javascript:history.back()">Go back</a>.
+        </p>
+        <p class="choice">Go to the
+          <a href="/">home page</a>.
         </p>
       <% } %>
 
+      <% if (isEditable) { %>
+        <p id="redesign">
+          <a href="/places/<%= place._id %>/edit">Redesign this place</a>.
+        </p>
+      <% } %>
     </div>
   </body>
 </html>

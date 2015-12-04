@@ -5,18 +5,20 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
-    <div id="landingPage">
-      <h1><%= title %></h1>
-      <p>one place to another</p>
+    <div id="container">
+      <h1 id="title">Take me from</h1>
       <p>
-      <% if (place) { %>
-        <p><a href="/places/<%= place.id %>">Play</a></p>
-        <p><a href="/places/design/<%= place.gameId %>">Design</a></p>
-      <% } %>
-        <p><a href="/games">Browse</a></p>
-        <p><a href="/games/new">Make</a>
-        <p><a href="http://github.com/vysogot/takemefrom">Contribute</a></p>
+        Take me from one place to another
       </p>
+
+      <% if (game) { %>
+        <p class="choice"><a href="/places/<%= game.theBeginning %>">Play</a></p>
+        <p class="choice"><a href="/places/design/<%= game._id %>">Design</a></p>
+      <% } %>
+        <p class="choice"><a href="/games">Browse</a></p>
+        <p class="choice"><a href="/games/new">Make</a>
+        <p id="redesign"><a href="http://github.com/vysogot/takemefrom">Contribute</a></p>
+
     </div>
   </body>
 </html>

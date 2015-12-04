@@ -3,13 +3,13 @@ var express = require('express');
 var router = express.Router();
 
 var User = require('../schemas/user');
-var Place = require('../schemas/place');
+var Game = require('../schemas/game');
 
 var title = "Take me from";
 
 router.get('/', function(req, res, next) {
-  Place.findOne({ content: "The beginning..." }, function(err, place) {
-    res.render('index', { title: 'Take me from', place: place });
+  Game.findOne({ isPrivate: { $exists: false } }, function(err, game) {
+    res.render('index', { title: 'Take me from', game: game });
   });
 });
 

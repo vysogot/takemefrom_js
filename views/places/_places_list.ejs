@@ -2,7 +2,7 @@
   <h2>These are the places:</h2>
   <ul>
     <% places.forEach(function(place, index) { %>
-      <li><%= place.content %> - <%= place._id %> –
+      <li><%= place.content %> - <%= place._id %><br />
         <a href="/places/<%= place._id %>">Go to</a> |
         <a href="/places/<%= place._id %>/edit">Edit</a>
         <% if (!place.isBeginning) { %>|
