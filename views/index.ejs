@@ -18,6 +18,11 @@
       <% } %>
         <p class="choice"><a href="/games">Browse</a></p>
         <p class="choice"><a href="/games/new">Create</a>
+      <% if (user) { %>
+        <p class="choice"><a href="/logout">Log out</a>
+      <% } else { %>
+        <p class="choice"><a href="/login">Log in</a>
+      <% } %>
         <p id="redesign"><a href="http://github.com/vysogot/takemefrom">Contribute</a></p>
 
     </div>

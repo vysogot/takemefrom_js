@@ -5,17 +5,16 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
-    <div>
+    <div id="container">
       <% if (games.length > 0) { %>
-        <p>These are your games:</p>
+        <p id="content">These are your games:</p>
         <% games.forEach(function(game, index) { %>
-          <p><a href="/places/<%= game.theBeginning %>"><%= game.name %></a></p>
+          <p class="choice"><a href="/places/<%= game.theBeginning %>"><%= game.name %></a></p>
         <% }); %>
       <% } else { %>
         <p>Welcome!</p>
       <% } %>
-      <hr />
-      <p><a href="/games/new">Create a new game</a>.</p>
+      <p id="redesign"><a href="/games/new">Create a new game</a></p>
 
     </div>
   </body>
