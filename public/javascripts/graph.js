@@ -30,3 +30,12 @@ function addNewPlace(gameId, fromPlaceId) {
     makeGraph();
   });
 }
+
+function addNewEdge(gameId, fromPlaceId, toPlaceId) {
+  $.ajax({
+    url: "/places/connect/" + gameId + '/' + fromPlaceId + '/' + toPlaceId
+  }).done(function(response) {
+    edges.push({ data: response.newEdge })
+    makeGraph();
+  });
+}

@@ -72,8 +72,8 @@
         .style('target-arrow-color', '#4CAD55').update();
     });
 
+    var selectedNode;
     cy.on('mousedown', 'node', function(evt) {
-
       nodeClicked = evt.cyTarget;
       timeStamp = nodeClicked.clickedAt || 0;
 
@@ -81,6 +81,12 @@
         nodeClicked.clickedAt = 0;
         addNewPlace(gameId, evt.cyTarget.data('id'));
       } else {
+        if (selectedNode) {
+          addNewEdge(gameId, selectedNode.data('id'), nodeClicked.data('id'));
+          selectedNode = undefined;
+        } else {
+          selectedNode = nodeClicked;
+        }
         nodeClicked.clickedAt = $.now();
       }
     });
