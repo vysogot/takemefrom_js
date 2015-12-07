@@ -1,5 +1,7 @@
 function placeUpdate(gameId, placeId, content) {
   $('#theBox').html(
+    '<a href="javascript:setConnection(\''+placeId+'\');">Connect</a><br />' +
+    '<a id="remove" href="/places/'+placeId+'/destroy">Remove</a><br />' +
     '<form action="/places/update" method="post">' +
       '<input type="hidden" name="gameId" value="' + gameId + '"/>' +
       '<input type="hidden" name="_id" value="' + placeId + '"/>' +

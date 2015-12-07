@@ -46,3 +46,7 @@ textarea {
   width: 50%;
   min-height: 100px;
 }
+
+a#remove {
+  color: #ff5e5b;
+}

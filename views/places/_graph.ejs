@@ -1,8 +1,20 @@
 <div id="cy"></div>
-<div id="boxContainer"><div id="theBox"></div></div>
+<div id="boxContainer">
+  <div id="theBox"></div>
+</div>
 <script>
   var nodes = <%- nodes %>
   var edges = <%- edges %>
+  var toConnect;
+  var fromPlaceId;
+
+  function setConnection(id) {
+    toConnect = true;
+    fromPlaceId = id;
+    window.cy.style()
+      .selector('node#' + id)
+      .style('background-color', '#ff5e5b').update();
+  }
 
   function makeGraph() {
 
@@ -48,51 +60,56 @@
 
     var gameId = '<%= game._id %>';
 
-    cy.on('tap', 'node', function(evt) {
-      placeUpdate(gameId, evt.cyTarget.data('id'), evt.cyTarget.data('content'));
+    function placeUpdateWithStyle(node) {
+      placeUpdate(gameId, node.data('id'), node.data('content'));
 
       resetStyle();
 
       cy.style()
-        .selector('node#' + evt.cyTarget.data('id'))
+        .selector('node#' + node.data('id'))
         .style('background-color', '#4CAD55').update();
-    });
 
-    cy.on('tap', 'edge', function(evt) {
+    }
+
+    cy.on('click', 'edge', function(evt) {
+      edge = evt.cyTarget;
+
       actionUpdate(gameId,
-        evt.cyTarget.data('source'),
-        evt.cyTarget.data('id'),
-        evt.cyTarget.data('content'));
+        edge.data('source'),
+        edge.data('id'),
+        edge.data('content'));
 
       resetStyle();
 
       cy.style()
-        .selector('edge#' + evt.cyTarget.data('id'))
+        .selector('edge#' + edge.data('id'))
         .style('line-color', '#4CAD55')
         .style('target-arrow-color', '#4CAD55').update();
     });
 
-    var selectedNode;
-    cy.on('mousedown', 'node', function(evt) {
+    cy.on('click', 'node', function(evt) {
       nodeClicked = evt.cyTarget;
       timeStamp = nodeClicked.clickedAt || 0;
 
       if ($.now() - timeStamp < 1000) {
+
         nodeClicked.clickedAt = 0;
         addNewPlace(gameId, evt.cyTarget.data('id'));
+
       } else {
-        if (selectedNode) {
-          addNewEdge(gameId, selectedNode.data('id'), nodeClicked.data('id'));
-          selectedNode = undefined;
+
+        if (toConnect) {
+          addNewEdge(gameId, fromPlaceId, nodeClicked.data('id'));
+          toConnect = false;
         } else {
-          selectedNode = nodeClicked;
+          placeUpdateWithStyle(nodeClicked);
         }
+
         nodeClicked.clickedAt = $.now();
       }
     });
 
     function resetStyle() {
-
       cy.style()
         .selector('node')
         .style('background-color', '#11479e').update();
