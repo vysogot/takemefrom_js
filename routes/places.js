@@ -26,7 +26,8 @@ router.get('/design/:gameId', function(req, res) {
             if (action.link !== undefined) {
               edges.push({ data: { source: place._id + '',
                                    target: action.link + '',
-                                   label: action.body + '' }})
+                                   content: action.body + '',
+                                   id: action.id + ''}})
             }
           });
         });
@@ -36,7 +37,7 @@ router.get('/design/:gameId', function(req, res) {
 
 
         var gameUrl = req.protocol + '://' + req.get('host') + '/places/' + game.theBeginning;
-        res.render('places/index', { title: title + " | " + game.name, gameUrl: gameUrl,
+        res.render('places/index', { title: title + " | " + game.name, game: game,
           places: places, place: place, err: err + err2, nodes: nodes, edges: edges }
         );
       });
@@ -97,47 +98,23 @@ router.post('/update', function(req, res) {
   id = req.body._id;
   delete req.body._id;
 
-  filteredActions = req.body.actions.filter(function(e) { return e.body !== ''})
-  req.body.actions = filteredActions;
+  console.log(util.inspect(req.body))
 
-  async.series([
-    function(callback) {
-      Game.findOne({ _id: req.body.gameId }, function(err, game) {
-        if (game && !game.isEditable(req.user)) {
-          res.status('403').redirect('/login');
-          return callback('stop');
+  Game.findOne({ _id: req.body.gameId }, function(err, game) {
+    if (game && !game.isEditable(req.user)) {
+      res.status('403').redirect('/login');
+    } else {
+      Place.update({ _id: id }, req.body, function(err, place) {
+        if (err) {
+          res.send(err);
         } else {
-          callback();
-        }
-      });
-    },
-
-    function(done) {
-      async.each(req.body.actions, function(action, callback) {
-        if (action.link === '') {
-          newPlace = { content: 'Post - ' + action.body, gameId: req.body.gameId, actions: [] }
-          Place(newPlace).save(function(err, place) {
-            action.link = place._id;
-            callback();
+          Place.findOne({ _id: id}, function(err, place) {
+            res.redirect('/places/design/' + place.gameId);
           });
-        } else {
-          callback();
         }
-      }, function() {
-
-        Place.update({ _id: id }, req.body, function(err, place) {
-          if (err) {
-            res.send(err);
-          } else {
-            Place.findOne({ _id: id}, function(err, place) {
-              res.redirect('/places/design/' + place.gameId);
-            });
-          }
-        });
       });
-      done();
     }
-  ]);
+  });
 });
 
 router.get('/:id/edit', function(req, res) {

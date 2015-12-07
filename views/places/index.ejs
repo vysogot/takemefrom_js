@@ -4,17 +4,14 @@
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
 
+    <script src="/javascripts/jquery-2.1.4.min.js"></script>
     <script src="/javascripts/dagre.min.js"></script>
     <script src="/javascripts/cytoscape.min.js"></script>
     <script src="/javascripts/cytoscape-dagre.js"></script>
 
   </head>
   <body>
-    <div id="container">
-      <h1><%= title %></h1>
-      <%- include('_places_list') %>
-      <%- include('_create_form') %>
-      <%- include('_graph') %>
-    </div>
+    <%- include('_graph') %>
+    <script src="/javascripts/graph.js"></script>
   </body>
 </html>

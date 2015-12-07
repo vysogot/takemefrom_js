@@ -21,9 +21,28 @@ h1, h2 { margin: 0; padding: 0.25em;}
 
 #cy {
   width: 100%;
-  height: 300px;
-  border-top: 1px solid gray;
-  border-bottom: 1px solid gray;
+  height: 67vh;
+  z-index: 998;
+  background: #eee;
+}
+
+#boxContainer {
+  border:1px solid black;
   z-index: 999;
-  background: white;
+  background: #ccc;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 33vh;
+}
+
+#theBox {
+  padding: 1em;
+  color: black;
+}
+
+textarea {
+  width: 50%;
+  min-height: 100px;
 }

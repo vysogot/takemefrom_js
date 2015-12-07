@@ -4,7 +4,6 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var ActionSchema = new Schema({
-    _id: false,
     body: String,
     link: Schema.Types.ObjectId
 });

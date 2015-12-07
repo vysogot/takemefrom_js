@@ -1,49 +1,87 @@
+<div id="cy"></div>
+<div id="boxContainer"><div id="theBox"></div></div>
+<script>
+  function makeGraph() {
 
-    <h2>Graph</h2>
-		<div id="cy"></div>
-    <script>
-      function makeGraph() {
+    var cy = window.cy = cytoscape({
+      container: document.getElementById('cy'),
 
-        var cy = window.cy = cytoscape({
-          container: document.getElementById('cy'),
+      boxSelectionEnabled: false,
+      autounselectify: true,
 
-          boxSelectionEnabled: false,
-          autounselectify: true,
+      layout: {
+        name: 'dagre'
+      },
 
-          layout: {
-            name: 'dagre'
-          },
+      style: [
+        {
+          selector: 'node',
+          style: {
+            //'content': 'data(content)',
+            'text-opacity': 0.5,
+            'text-valign': 'center',
+            'text-halign': 'right',
+            'background-color': '#11479e'
+          }
+        },
 
-          style: [
-            {
-              selector: 'node',
-              style: {
-                'content': 'data(content)',
-                'text-opacity': 0.5,
-                'text-valign': 'center',
-                'text-halign': 'right',
-                'background-color': '#11479e'
-              }
-            },
+        {
+          selector: 'edge',
+          style: {
+            //'label': 'data(label)',
+            'width': 4,
+            'target-arrow-shape': 'triangle',
+            'line-color': '#9dbaea',
+            'target-arrow-color': '#9dbaea'
+          }
+        }
+      ],
 
-            {
-              selector: 'edge',
-              style: {
-                'label': 'data(label)',
-                'width': 4,
-                'target-arrow-shape': 'triangle',
-                'line-color': '#9dbaea',
-                'target-arrow-color': '#9dbaea'
-              }
-            }
-          ],
+      elements: {
+        nodes: <%- nodes %>,
+        edges: <%- edges %>
+      },
+    });
 
-          elements: {
-            nodes: <%- nodes %>,
-            edges: <%- edges %>
-          },
-        });
+    var gameId = '<%= game._id %>';
 
-      }
-      makeGraph();
+    cy.on('tap', 'node', function(evt) {
+      placeUpdate(gameId, evt.cyTarget.data('id'), evt.cyTarget.data('content'));
+
+      resetStyle();
+
+      cy.style()
+        .selector('node#' + evt.cyTarget.data('id'))
+        .style('background-color', '#4CAD55').update();
+    });
+
+    cy.on('tap', 'edge', function(evt) {
+      actionUpdate(gameId,
+        evt.cyTarget.data('source'),
+        evt.cyTarget.data('id'),
+        evt.cyTarget.data('content'));
+
+      resetStyle();
+
+      cy.style()
+        .selector('edge#' + evt.cyTarget.data('id'))
+        .style('line-color', '#4CAD55')
+        .style('target-arrow-color', '#4CAD55').update();
+    });
+
+    function resetStyle() {
+
+      cy.style()
+        .selector('node')
+        .style('background-color', '#11479e').update();
+
+      cy.style()
+        .selector('edge')
+        .style('line-color', '#9dbaea')
+        .style('target-arrow-color', '#9dbaea').update();
+
+    }
+
+  }
+  makeGraph();
 </script>
