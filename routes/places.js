@@ -1,4 +1,5 @@
 var express = require('express');
+var mongoose = require('mongoose');
 var util = require('util');
 var async = require('async');
 var router = express.Router();
@@ -47,51 +48,40 @@ router.get('/design/:gameId', function(req, res) {
   });
 });
 
-router.post('/create', function(req, res) {
-  var params = req.body;
-
-  filteredActions = req.body.actions.filter(function(e) { return e.body !== ''})
-  req.body.actions = filteredActions;
-
-  async.series([
-    function(callback) {
-      Game.findOne({ _id: params.gameId }, function(err, game) {
-        if (game && !game.isEditable(req.user)) {
-          res.redirect(403, '/login');
-        }
-      });
-
-      callback();
-    },
-
-    function(done) {
-      async.each(params.actions, function(action, callback) {
-        if (action.link === '') {
-          newPlace = { content: 'Post - ' + action.body, gameId: params.gameId, actions: [] }
-          Place(newPlace).save(function(err, place) {
-            action.link = place._id;
-            callback();
-          });
-        } else {
-          callback();
-        }
-      }, done);
-    },
-
-    function(callback) {
-
-      Place(params).save(function(err, place) {
+router.get('/create/:gameId/:fromPlaceId', function(req, res) {
+  Game.findOne({ _id: req.params.gameId }, function(err, game) {
+    if (game && !game.isEditable(req.user)) {
+      res.status('403').redirect('/login');
+    } else {
+      Place({ content: '--new place--', actions: [], gameId: req.params.gameId })
+        .save(function(err, newPlace) {
         if (err) {
           res.send(err);
         } else {
-          Place.find({}, function(err, places) {
-            res.redirect('/places/design/' + place.gameId)
+          Place.findOne({ _id: req.params.fromPlaceId },
+            function(err, oldPlace) {
+            if (err) {
+              res.send(err);
+            } else {
+              newActionId = mongoose.Types.ObjectId();
+              oldPlace.update({ $push: { actions: { body: '--new choice--',
+                         link: newPlace._id, _id: newActionId }}}, function(err, result) {
+                if (err) {
+                  res.send(err);
+                } else {
+                  res.send({ newNode: { id: newPlace._id, content: newPlace.content },
+                           newEdge: { source: oldPlace._id,
+                                      target: newPlace._id,
+                                      content: '--new choice--',
+                                      id: newActionId }})
+                }
+              });
+            }
           });
         }
       });
-      callback();
     }
-  ]);
+  });
 });
 
 router.post('/update', function(req, res) {
@@ -120,6 +110,30 @@ router.post('/update', function(req, res) {
           }
         });
       }
+    }
+  });
+});
+
+router.get('/connect/:gameId/:fromPlaceId/:toPlaceId', function(req, res) {
+  Game.findOne({ _id: req.params.gameId }, function(err, game) {
+    if (game && !game.isEditable(req.user)) {
+      res.status('403').redirect('/login');
+    } else {
+      newActionId = mongoose.Types.ObjectId();
+      Place.update({ _id: req.params.fromPlaceId },
+        { $push: { actions: {
+            body: "--new choice--",
+            link: req.params.toPlaceId,
+            _id: newActionId }}}, function(err, result) {
+        if (err) {
+          res.send(err);
+        } else {
+          res.send({ newEdge: { source: req.params.fromPlaceId,
+                              target: req.params.toPlaceId,
+                              content: '--new choice--',
+                              id: newActionId }})
+        }
+      });
     }
   });
 });

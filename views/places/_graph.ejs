@@ -1,6 +1,9 @@
 <div id="cy"></div>
 <div id="boxContainer"><div id="theBox"></div></div>
 <script>
+  var nodes = <%- nodes %>
+  var edges = <%- edges %>
+
   function makeGraph() {
 
     var cy = window.cy = cytoscape({
@@ -38,8 +41,8 @@
       ],
 
       elements: {
-        nodes: <%- nodes %>,
-        edges: <%- edges %>
+        nodes: nodes,
+        edges: edges
       },
     });
 
@@ -67,6 +70,19 @@
         .selector('edge#' + evt.cyTarget.data('id'))
         .style('line-color', '#4CAD55')
         .style('target-arrow-color', '#4CAD55').update();
+    });
+
+    cy.on('mousedown', 'node', function(evt) {
+
+      nodeClicked = evt.cyTarget;
+      timeStamp = nodeClicked.clickedAt || 0;
+
+      if ($.now() - timeStamp < 1000) {
+        nodeClicked.clickedAt = 0;
+        addNewPlace(gameId, evt.cyTarget.data('id'));
+      } else {
+        nodeClicked.clickedAt = $.now();
+      }
     });
 
     function resetStyle() {

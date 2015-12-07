@@ -20,3 +20,13 @@ function actionUpdate(gameId, placeId, actionId, content) {
     '</form>'
   );
 }
+
+function addNewPlace(gameId, fromPlaceId) {
+  $.ajax({
+    url: "/places/create/" + gameId + '/' + fromPlaceId
+  }).done(function(response) {
+    nodes.push({ data: response.newNode });
+    edges.push({ data: response.newEdge })
+    makeGraph();
+  });
+}
