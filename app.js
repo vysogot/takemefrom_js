@@ -46,7 +46,7 @@ app.use('/places', places);
 
 // Mongoose connection
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/takemefrom');
+mongoose.connect('mongodb://gamer:tmfadmin@ds047504.mongolab.com:47504/takemefrom');
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

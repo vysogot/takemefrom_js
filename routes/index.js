@@ -9,7 +9,7 @@ var title = "Take me from";
 
 router.get('/', function(req, res, next) {
   Game.findOne({ isPrivate: { $exists: false } }, function(err, game) {
-    res.render('index', { title: 'Take me from', game: game });
+    res.render('index', { title: 'Take me from', game: game, user: req.user });
   });
 });
 
