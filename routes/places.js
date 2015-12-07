@@ -98,21 +98,28 @@ router.post('/update', function(req, res) {
   id = req.body._id;
   delete req.body._id;
 
-  console.log(util.inspect(req.body))
-
   Game.findOne({ _id: req.body.gameId }, function(err, game) {
     if (game && !game.isEditable(req.user)) {
       res.status('403').redirect('/login');
     } else {
-      Place.update({ _id: id }, req.body, function(err, place) {
-        if (err) {
-          res.send(err);
-        } else {
-          Place.findOne({ _id: id}, function(err, place) {
-            res.redirect('/places/design/' + place.gameId);
-          });
-        }
-      });
+      if (req.body.content) {
+        Place.update({ _id: id }, req.body, function(err, place) {
+          if (err) {
+            res.send(err);
+          } else {
+            res.redirect('/places/design/' + req.body.gameId);
+          }
+        });
+      } else {
+        Place.update({ _id: id, 'actions._id': req.body.actionId },
+          { $set: { "actions.$.body": req.body.actionBody }}, function(err, result) {
+          if (err) {
+            res.send(err);
+          } else {
+            res.redirect('/places/design/' + req.body.gameId);
+          }
+        });
+      }
     }
   });
 });
