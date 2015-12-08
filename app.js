@@ -12,6 +12,7 @@ var LocalStrategy = require('passport-local').Strategy;
 var routes = require('./routes/index');
 var games = require('./routes/games');
 var places = require('./routes/places');
+var actions = require('./routes/actions');
 
 var app = express();
 
@@ -43,6 +44,7 @@ passport.deserializeUser(User.deserializeUser());
 app.use('/', routes);
 app.use('/games', games);
 app.use('/places', places);
+app.use('/actions', actions);
 
 // Mongoose connection
 var mongoose = require('mongoose');

@@ -1,18 +1,10 @@
 var mongoose = require('mongoose');
 
-// Places documents
 var Schema = mongoose.Schema;
-
-var ActionSchema = new Schema({
-    body: String,
-    link: Schema.Types.ObjectId
-});
-
 var PlaceSchema = new Schema({
     gameId: Schema.Types.ObjectId,
     isBeginning: Boolean,
-    content: String,
-    actions: [ActionSchema]
+    content: String
 });
 
 module.exports = mongoose.model('Place', PlaceSchema, 'places');

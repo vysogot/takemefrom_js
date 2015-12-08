@@ -5,6 +5,8 @@
 <script>
   var nodes = <%- nodes %>
   var edges = <%- edges %>
+  var theBeginning = <%- theBeginning %>
+
   var toConnect;
   var fromPlaceId;
 
@@ -58,7 +60,17 @@
       },
     });
 
+    cy.ready(function() {
+      markBeginning();
+    });
+
     var gameId = '<%= game._id %>';
+
+    function markBeginning() {
+      cy.style()
+        .selector('node#' + theBeginning.id)
+        .style('background-color', 'darkorange').update();
+    }
 
     function placeUpdateWithStyle(node) {
       placeUpdate(gameId, node.data('id'), node.data('content'));
@@ -119,6 +131,7 @@
         .style('line-color', '#9dbaea')
         .style('target-arrow-color', '#9dbaea').update();
 
+      markBeginning();
     }
 
   }
