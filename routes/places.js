@@ -56,7 +56,9 @@ router.post('/:id/update', function(req, res) {
           if (err) {
             res.send(err);
           } else {
-            res.redirect('/games/' + game._id);
+            Place.findOne({ _id: place._id }, function(err, place) {
+              res.send({ updatedNodeContent: place.content });
+            });
           }
         });
       }

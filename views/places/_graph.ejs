@@ -94,7 +94,7 @@
         .style('background-color', '#4CAD55').update();
     }
 
-    cy.on('click', 'edge', function(evt) {
+    cy.on('vclick', 'edge', function(evt) {
       edge = evt.cyTarget;
 
       actionUpdate(
@@ -109,7 +109,7 @@
         .style('target-arrow-color', '#4CAD55').update();
     });
 
-    cy.on('click', 'node', function(evt) {
+    cy.on('vclick', 'node', function(evt) {
       nodeClicked = evt.cyTarget;
       timeStamp = nodeClicked.clickedAt || 0;
 

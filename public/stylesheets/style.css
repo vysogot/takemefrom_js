@@ -3,7 +3,6 @@ a, a:link, a:active, a:visited { color: blue; text-decoration: none; }
 a:hover { color: darkblue; }
 
 p { border-bottom: 1px solid gray; margin: 0; padding: 1em 1.5em; }
-form { padding: 1em 1.5em; }
 ul li { margin-bottom: 1em; }
 
 h1, h2 { margin: 0; padding: 0.25em;}
@@ -43,7 +42,7 @@ h1, h2 { margin: 0; padding: 0.25em;}
 }
 
 textarea {
-  width: 50%;
+  width: 99%;
   min-height: 100px;
 }
 

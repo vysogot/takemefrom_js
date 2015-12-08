@@ -36,7 +36,7 @@ router.get('/create/:fromPlaceId/:toPlaceId', function(req, res) {
 });
 
 router.post('/:id/update', function(req, res) {
-  Action.findOne({ _id: req.params._id }, function(err, action) {
+  Action.findOne({ _id: req.params.id }, function(err, action) {
     Game.findOne({ _id: action.gameId }, function(err, game) {
       if (game && !game.isEditable(req.user)) {
         res.status('403').redirect('/login');
@@ -46,7 +46,7 @@ router.post('/:id/update', function(req, res) {
           if (err) {
             res.send(err);
           } else {
-            res.redirect('/games/' + req.body.gameId);
+            res.redirect('/games/' + game._id);
           }
         });
       }

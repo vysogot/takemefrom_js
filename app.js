@@ -2,8 +2,10 @@ var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
+var util = require('util');
 var cookieParser = require('cookie-parser');
 var session = require('cookie-session');
+var expressSanitizer = require('express-sanitizer');
 var bodyParser = require('body-parser');
 
 var passport = require('passport');
@@ -24,6 +26,7 @@ app.set('view engine', 'ejs')
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
+app.use(expressSanitizer());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(session({keys: ['secretkey1', 'secretkey2', '...']}));
@@ -40,6 +43,15 @@ passport.use(new LocalStrategy(User.authenticate()));
 
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
+app.use(function (req, res, next) {
+  req.body.name = req.sanitize(req.body.name);
+  req.body.username = req.sanitize(req.body.username);
+  req.body.password = req.sanitize(req.body.password);
+  req.body.email = req.sanitize(req.body.email);
+  req.body.content = req.sanitize(req.body.content);
+  next();
+});
 
 app.use('/', routes);
 app.use('/games', games);
