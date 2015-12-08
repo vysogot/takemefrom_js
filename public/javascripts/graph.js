@@ -1,31 +1,32 @@
-function placeUpdate(gameId, placeId, content) {
+function placeUpdate(placeId, content, isDestroyable) {
+  removeLink = "";
+  if (!isDestroyable) {
+    removeLink = '<a id="remove" href="/places/'+placeId+'/destroy">Remove</a><br />'
+  }
+
   $('#theBox').html(
     '<a href="javascript:setConnection(\''+placeId+'\');">Connect</a><br />' +
-    '<a id="remove" href="/places/'+placeId+'/destroy">Remove</a><br />' +
-    '<form action="/places/update" method="post">' +
-      '<input type="hidden" name="gameId" value="' + gameId + '"/>' +
-      '<input type="hidden" name="_id" value="' + placeId + '"/>' +
+     removeLink +
+    '<form action="/places/'+placeId+'/update" method="post">' +
       '<textarea name="content">' + content + '</textarea><br />' +
       '<input type="submit" value="Submit" />' +
     '</form>'
   );
 }
 
-function actionUpdate(gameId, placeId, actionId, content) {
+function actionUpdate(actionId, content) {
   $('#theBox').html(
-    '<form action="/places/update" method="post">' +
-      '<input type="hidden" name="gameId" value="' + gameId + '"/>' +
-      '<input type="hidden" name="_id" value="' + placeId + '"/>' +
-      '<input type="hidden" name="actionId" value="' + actionId + '"/>' +
-      '<textarea name="actionBody">' + content + '</textarea><br />' +
+    '<a id="remove" href="/actions/'+actionId+'/destroy">Remove</a><br />' +
+    '<form action="/actions/'+actionId+'/update" method="post">' +
+      '<textarea name="content">' + content + '</textarea><br />' +
       '<input type="submit" value="Submit" />' +
     '</form>'
   );
 }
 
-function addNewPlace(gameId, fromPlaceId) {
+function addNewPlace(fromPlaceId) {
   $.ajax({
-    url: "/places/create/" + gameId + '/' + fromPlaceId
+    url: "/places/create/" + fromPlaceId
   }).done(function(response) {
     nodes.push({ data: response.newNode });
     edges.push({ data: response.newEdge })
@@ -33,9 +34,9 @@ function addNewPlace(gameId, fromPlaceId) {
   });
 }
 
-function addNewEdge(gameId, fromPlaceId, toPlaceId) {
+function addNewEdge(fromPlaceId, toPlaceId) {
   $.ajax({
-    url: "/places/connect/" + gameId + '/' + fromPlaceId + '/' + toPlaceId
+    url: "/actions/create/" + fromPlaceId + '/' + toPlaceId
   }).done(function(response) {
     edges.push({ data: response.newEdge })
     makeGraph();

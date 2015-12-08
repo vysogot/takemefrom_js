@@ -7,6 +7,7 @@ var router = express.Router();
 
 var Game = require('../schemas/game');
 var Place = require('../schemas/place');
+var Action = require('../schemas/action');
 
 var title = "Games | Take me from";
 
@@ -46,8 +47,55 @@ router.post('/create', function(req, res) {
       firstPlace = { _id: firstPlaceId, gameId: game._id, isBeginning: true,
         content: "The beginning...", actions: [] }
       Place(firstPlace).save(function(err, place) {
-        res.redirect('/places/design/' + game._id)
+        res.redirect('/games/' + game._id)
       });
+    }
+  });
+});
+
+router.get('/:id/:placeToEditId?', function(req, res) {
+  Game.findOne({ _id: req.params.id }, function(err, game) {
+    if (game && game.isEditable(req.user)) {
+
+      Place.find({ gameId: req.params.id }, function(err2, places) {
+
+        nodes = [];
+        edges = [];
+
+        places.forEach(function(place) {
+          node = { data: { id: place._id + '', content: place.content + '' } }
+          nodes.push(node);
+        });
+
+        Action.find({ gameId: req.params.id }, function(err3, actions) {
+          actions.forEach(function(action) {
+            edges.push({ data: { source: action.source + '',
+                                 target: action.target + '',
+                                 content: action.content + '',
+                                 id: action.id + '' }})
+          });
+
+          nodes = util.inspect(nodes);
+          edges = util.inspect(edges);
+          theBeginning = util.inspect({ id: game.theBeginning + ''});
+
+          placeToEdit = {};
+          if (req.params.placeToEditId) {
+            placeToEdit = { id: req.params.placeToEditId + '' };
+          }
+
+          res.render('places/index', { title: title + " | " + game.name,
+                                       game: game,
+                                       err: err + err2 + err3,
+                                       nodes: nodes,
+                                       edges: edges,
+                                       placeToEdit: util.inspect(placeToEdit),
+                                       theBeginning: theBeginning }
+          );
+        });
+      });
+    } else {
+      res.status('403').redirect('/login');
     }
   });
 });

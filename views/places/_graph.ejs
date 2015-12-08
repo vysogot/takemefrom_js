@@ -6,6 +6,7 @@
   var nodes = <%- nodes %>
   var edges = <%- edges %>
   var theBeginning = <%- theBeginning %>
+  var placeToEdit = <%- placeToEdit %>
 
   var toConnect;
   var fromPlaceId;
@@ -62,9 +63,12 @@
 
     cy.ready(function() {
       markBeginning();
+      $('#theBox').html('');
+      if (placeToEdit.id) {
+        nodeToEdit = cy.elements('node#' + placeToEdit.id)
+        placeUpdateWithStyle(nodeToEdit);
+      }
     });
-
-    var gameId = '<%= game._id %>';
 
     function markBeginning() {
       cy.style()
@@ -73,21 +77,27 @@
     }
 
     function placeUpdateWithStyle(node) {
-      placeUpdate(gameId, node.data('id'), node.data('content'));
+      isBeginning = false;
+      if (node.data('id') === theBeginning.id) {
+        isBeginning = true;
+      }
+
+      placeUpdate(
+        node.data('id'),
+        node.data('content'),
+        isBeginning);
 
       resetStyle();
 
       cy.style()
         .selector('node#' + node.data('id'))
         .style('background-color', '#4CAD55').update();
-
     }
 
     cy.on('click', 'edge', function(evt) {
       edge = evt.cyTarget;
 
-      actionUpdate(gameId,
-        edge.data('source'),
+      actionUpdate(
         edge.data('id'),
         edge.data('content'));
 
@@ -106,12 +116,12 @@
       if ($.now() - timeStamp < 1000) {
 
         nodeClicked.clickedAt = 0;
-        addNewPlace(gameId, evt.cyTarget.data('id'));
+        addNewPlace(evt.cyTarget.data('id'));
 
       } else {
 
         if (toConnect) {
-          addNewEdge(gameId, fromPlaceId, nodeClicked.data('id'));
+          addNewEdge(fromPlaceId, nodeClicked.data('id'));
           toConnect = false;
         } else {
           placeUpdateWithStyle(nodeClicked);

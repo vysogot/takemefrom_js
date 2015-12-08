@@ -14,7 +14,7 @@
 
       <% if (game) { %>
         <p class="choice"><a href="/places/<%= game.theBeginning %>">Play</a></p>
-        <p class="choice"><a href="/places/design/<%= game._id %>">Redesign</a></p>
+        <p class="choice"><a href="/games/<%= game._id %>">Redesign</a></p>
       <% } %>
         <p class="choice"><a href="/games">Browse</a></p>
         <p class="choice"><a href="/games/new">Create</a>
