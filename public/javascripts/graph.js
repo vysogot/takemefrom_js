@@ -12,7 +12,11 @@ function placeUpdate(placeId, content, isDestroyable) {
     '<a href="/places/'+placeId+'">Play</a></form>'
   );
 
-  
+  $('#submit').attr('disabled', 'disabled');
+  $('#content').on('input', function() {
+    $('#submit').removeAttr('disabled');
+  });
+
   $("#submit").click(function() {
     content = $('#content').val();
     $.ajax({
