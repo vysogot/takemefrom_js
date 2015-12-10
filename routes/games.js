@@ -1,8 +1,6 @@
 var express = require('express');
 var mongoose = require('mongoose');
 var util = require('util');
-var async = require('async');
-var bcrypt = require('bcrypt');
 var router = express.Router();
 
 var Game = require('../schemas/game');

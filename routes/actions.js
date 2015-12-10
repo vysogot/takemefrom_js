@@ -1,7 +1,6 @@
 var express = require('express');
 var mongoose = require('mongoose');
 var util = require('util');
-var async = require('async');
 var router = express.Router();
 
 var Place = require('../schemas/place');
